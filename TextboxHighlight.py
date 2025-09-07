@@ -6,7 +6,8 @@ class TextboxHighlight():
     Date: August-2025
     Extends textbox widget to allow for text highlighting.
     __init__ sets the initial values for each configurable item.
-    add allows the options to be changed for that item only.
+    config allows those values to be changed for all future calls.
+    .add allows the options to be changed for that call only.
     """
     def __init__(self,
                  underline: bool=True,
@@ -164,3 +165,4 @@ class TextboxHighlight():
                     text_widget.tag_delete(tagname)
             else:
                 raise TypeError(f'{tag_name} is neither a list, tuple nor set. It is {str(type(tag_name))}.')
+
