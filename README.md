@@ -19,3 +19,14 @@ textbox_highlight.add(text_widget=tb, tag_name='are', the_text='are',
                       fg_color='blue', bg_color='lightblue', underline=False, relief=SUNKEN, qty=2)
 ```
 ![Screenshot](https://github.com/Crystalline-Entity/TextboxHIghlight/blob/main/textboxhighlight_messagebox.png)
+
+  | **Parameter** | **Description** | **Default** |
+  | --- | --- | --- |
+  | underline | Underline the text | True |
+  | underlinefg | underline colour | 'blue' |
+  | fg_color | Highlighted text foreground colour | 'blue' |
+  | bg_color | Highlighted txt, background colour | 'yellow' |
+  | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 | '' |
+  | relief | Relief can be flat, raised. sunken, groove or ridge | '' |
+  | bold | Make the text bold | False |
+ 
