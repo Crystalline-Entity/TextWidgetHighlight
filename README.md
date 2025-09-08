@@ -20,6 +20,11 @@ textbox_highlight.add(text_widget=tb, tag_name='are', the_text='are',
 ```
 ![Screenshot](https://github.com/Crystalline-Entity/TextboxHIghlight/blob/main/textboxhighlight_messagebox.png)
 
+<h2 align='center'> OPTIONS </h2>
+<div align='left'>
+
+Parameters for the initial call to textbox_link. These are the defaults for all future calls.
+
   | **Parameter** | **Description** | **Default** |
   | --- | --- | --- |
   | underline | Underline the text | True |
@@ -30,3 +35,22 @@ textbox_highlight.add(text_widget=tb, tag_name='are', the_text='are',
   | relief | Relief can be flat, raised. sunken, groove or ridge | '' |
   | bold | Make the text bold | False |
  
+Parameters for calls to .add to create highlighted text.
+These options are used to over-ride the options from the initial call above. These options apply only to this
+call and are not saved.
+
+  | **Parameter** | **Description** |
+  | --- | --- |
+  | text_widget |  The name of the text widget to apply highlights to |
+  | the_text | The text in the widget to highlight |
+  | tag_name | The name of the tag to use for this highlight|
+  | new_text | Replacement text for the_text. Used if the_text has id options |
+  | underline | Underline text |
+  | underlinefg | Underline colour |
+  | fg_color | Highlighted text foreground colour |
+  | bg_color | Highlighted text background colour |
+  | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 |
+  | relief | Relief can be flat, raised. sunken, groove or ridge |
+  | bold | Make the text bold |
+
+To change the default values for future calls, use .config and set the values.
