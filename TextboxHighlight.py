@@ -3,31 +3,34 @@ from tkinter import Tk, Toplevel, Label, font
 class TextboxHighlight():
     """
     Author: Kevin Glentworth
-    Date: August-2025
-    Extends textbox widget to allow for text highlighting.
-    __init__ sets the initial values for each configurable item.
-    config allows those values to be changed for all future calls.
+    Date: September-2025
+    Version: 2.0
+    Adds text highlighting to text in a text_widget.
+    __init__ sets the initial values for each configurable item, colours etc.
+    .config allows those values to be changed for any future calls, but not for existing highlights.
     .add allows the options to be changed for that call only.
+    .modify allows an existing tags configuratoion to be changed.
+    The text_widget is passed in the .add function, rather than the __init__ function. A single instance can
+        then be used for all text_widgets.
+    To change existing highlights, use an existing tag_name and leave the_text blank.
     """
     def __init__(self,
                  underline: bool=True,
                  underlinefg: str='blue',
-                 hover_ul: str='green',
-                 hover_bg: str='orange',
                  fg_color: str='blue',
                  bg_color: str='yellow',
                  borderwidth: str='',
                  relief: str='',
-                 bold: bool = False):
+                 bold: bool = False,
+                 italic: bool=False):
         self._underline = underline
         self._underlinefg = underlinefg
-        self._hover_ul = hover_ul
-        self._hover_bg = hover_bg
         self._fg_color = fg_color
         self._bg_color = bg_color
         self._borderwidth = borderwidth
         self._relief = relief
         self._bold = bold
+        self._italic = italic
         
 
     def add(self,
@@ -38,15 +41,14 @@ class TextboxHighlight():
             qty: int=-1,
             underline: bool=None,
             underlinefg: str=None,
-            hover_ul: str=None,
-            hover_bg: str=None,
             fg_color: str=None,
             bg_color: str=None,
             borderwidth: str=None,
             relief: str=None,
-            bold: bool=None):
+            bold: bool=None, 
+            italic: bool = None):
         """
-        Highlight one or more words in a textbox.
+        Highlight one or more words in a text_widget.
         New text, if specified, replaces the existing text. 
         """
         try:
@@ -82,36 +84,84 @@ class TextboxHighlight():
         if text_widget.tag_nextrange(tag_name, '1.0') == 0:
             return
         self._text_widget = text_widget
-        fc = self._fg_color if fg_color is None else fg_color
-        bc = self._bg_color if bg_color is None else bg_color
-        ul = self._underline if underline is None else underline
-        uf = self._underlinefg if underlinefg is None else underlinefg
-        bw = self._borderwidth if borderwidth is None else borderwidth
-        r = self._relief if relief is None else relief
-        b = self._bold if bold is None else bold
-        text_widget.tag_config(tag_name, foreground=fc, background=bc)
-        if ul:
-            text_widget.tag_config(tag_name, underline=True, underlinefg=uf)
-        if bw:
-            text_widget.tag_config(tag_name, borderwidth=bw)
-        if r: # Ensure borderwidth is at least 3 to permit relief to be actioned.
-            if bw:
-                i = int(bw)
+        # Temporary variables are named as the actual variable with an _ appended.
+        fg_color_ = self._fg_color if fg_color is None else fg_color
+        bg_color_ = self._bg_color if bg_color is None else bg_color
+        underline_ = self._underline if underline is None else underline
+        underlinefg_ = self._underlinefg if underlinefg is None else underlinefg
+        borderwidth_ = self._borderwidth if borderwidth is None else borderwidth
+        relief_ = self._relief if relief is None else relief
+        bold_ = self._bold if bold is None else bold
+        italic_ = self._italic if italic is None else italic
+        text_widget.tag_config(tag_name, foreground=fg_color_, background=bg_color)
+        if underline_:
+            text_widget.tag_config(tag_name, underline=True, underlinefg=underlinefg_)
+        if borderwidth_:
+            text_widget.tag_config(tag_name, borderwidth=borderwidth_)
+        if relief_: # Ensure borderwidth is at least 3 to permit relief to be actioned.
+            if borderwidth_:
+                i = int(borderwidth_)
                 if i < 3:
                     bw1 = '3'
                 else:
                     bw1 = str(i)
             else:
                 bw1 = '3'
-            text_widget.tag_config(tag_name, borderwidth=bw1, relief=r)
-        if b: # If we pass just bold to tag_config, font=('bold',), it seems to use a different font than the textbox was created with.
+            text_widget.tag_config(tag_name, borderwidth=bw1, relief=relief_)
+        if bold_ or italic_: # If we just specify bold and/or italic, it seems to use a different font than the textbox was created with.
             font_string = text_widget.cget('font') # returned font is str '{family} size'. Split on the } and then the { to separate family.
             b1 = font_string.split('}')
             b2 = b1[0].split('{')
-            f = tuple((b2[1], b1[1])) + ('bold',)
+            f = tuple((b2[1], b1[1]))
+            if bold_:
+                f += ('bold',)
+            if italic_:
+                f += ('italic',)
             text_widget.tag_config(tag_name, font=(f))
 
         
+    def modify(self,
+               text_widget,
+               tag_name: str,
+               underline: bool=None,
+               underlinefg: str=None,
+               fg_color: str=None,
+               bg_color: str=None,
+               relief: str=None,
+               bold: bool=None, 
+               italic: bool=None):
+        """
+        Change the highlight for an existing tag. 
+        """
+        if underline is not None:
+            if underline is False:
+                text_widget.tag_config(tag_name, underline=False)
+            else:
+                if underlinefg is not None:
+                    text_widget.tag_config(tag_name, underlinefg=underlinefg)
+                else:
+                    text_widget.tag_config(tag_name, underline=True)
+        if fg_color is not None:
+            text_widget.tag_config(tag_name, foreground=fg_color)
+        if bg_color is not None:
+            text_widget.tag_config(tag_name, background=bg_color)
+        # If we pass just bold or italic to tag_config, it seems to use a different font than the text widget was created with.
+        if bold is not None or italic is not None:
+            font_string = text_widget.cget('font') # returned font is str '{family} size'. Split on the } and then the { to separate family.
+            b1 = font_string.split('}')
+            b2 = b1[0].split('{')
+            f = tuple((b2[1], b1[1]))
+            if bold is True:
+                f += ('bold',)
+            else:
+                f += ('normal',)
+            if italic is True:
+                f += ('italic',)
+            else:
+                f += ('roman',)
+            text_widget.tag_config(tag_name, font=(f))
+        
+            
     def configure(self, **kwargs):
         self.config(**kwargs)
         
@@ -121,10 +171,6 @@ class TextboxHighlight():
             self._underline = kwargs.pop('underline')
         if 'underlinefg' in kwargs:
             self._underlinefg = kwargs.pop('underlinefg')
-        if 'hover_ul' in kwargs:
-            self._hover_ul = kwargs.pop('hover_ul')
-        if 'hover_bg' in kwargs:
-            self._hover_bg = kwargs.pop('hover_bg')
         if 'fg_color' in kwargs:
             self._fg_color = kwargs.pop('fg_color')
         if 'bg_color' in kwargs:
@@ -135,6 +181,8 @@ class TextboxHighlight():
             self._relief = kwargs.pop('relief')
         if 'bold' in kwargs:
             self._bold = kwargs.pop('bold')
+        if 'italic' in kwargs:
+            self._italic = kwargs.pop('italic')
         if kwargs:
             raise ValueError(f'{list(kwargs.keys())} not supported.')
         
@@ -165,4 +213,3 @@ class TextboxHighlight():
                     text_widget.tag_delete(tagname)
             else:
                 raise TypeError(f'{tag_name} is neither a list, tuple nor set. It is {str(type(tag_name))}.')
-
