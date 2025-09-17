@@ -9,7 +9,7 @@ class TextboxHighlight():
     __init__ sets the initial values for each configurable item, colours etc.
     .config allows those values to be changed for any future calls, but not for existing highlights.
     .add allows the options to be changed for that call only.
-    .modify allows an existing tags configuratoion to be changed.
+    .modify allows an existing tags configuration to be changed.
     The text_widget is passed in the .add function, rather than the __init__ function. A single instance can
         then be used for all text_widgets.
     To change existing highlights, use an existing tag_name and leave the_text blank.
@@ -213,3 +213,4 @@ class TextboxHighlight():
                     text_widget.tag_delete(tagname)
             else:
                 raise TypeError(f'{tag_name} is neither a list, tuple nor set. It is {str(type(tag_name))}.')
+
