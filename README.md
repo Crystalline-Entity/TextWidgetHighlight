@@ -38,8 +38,9 @@ Parameters for the initial call to textbox_link. These are the defaults for all 
   | superscript | Make the text superscript | False |
   | subscript | Make the text subscript | False |
   | ignore_case | ignore the case of the text widget text| False |
-  | full_word | search for the text with no alphabetic characters either side | True |
-  |   | search for 'went', will not match twenty |   |
+  | full_word | search for the text with no alphabetic characters either side<br> 
+  search for 'went', will not match twenty| True |
+  
 
  
 Parameters for calls to .add to create highlighted text.
