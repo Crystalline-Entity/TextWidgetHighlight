@@ -34,6 +34,13 @@ Parameters for the initial call to textbox_link. These are the defaults for all 
   | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 | '' |
   | relief | Relief can be flat, raised. sunken, groove or ridge | '' |
   | bold | Make the text bold | False |
+  | italic | Make the text italic | False |
+  | superscript | Make the text superscript | False |
+  | subscript | Make the text subscript | False |
+  | ignore_case | ignore the case of the text widget text| False |
+  | full_word | search for the text with no alphabetic characters either side | True |
+  |   | search for 'went', will not match twenty |   |
+
  
 Parameters for calls to .add to create highlighted text.
 These options are used to over-ride the options from the initial call above. These options apply only to this
