@@ -30,7 +30,7 @@ Parameters for the initial call to textbox_link. These are the defaults for all 
   | fg_color | Highlighted text foreground colour | 'blue' |
   | bg_color | Highlighted txt, background colour | 'yellow' |
   | ignore_case | ignore the case of the text widget text| False |
-  | alpha_boundary | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will not match twenty<br>if False, search for went will not match twenty. | True |
+  | alpha_boundary | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
   | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 | '' |
   | relief | Relief can be flat, raised. sunken, groove or ridge | '' |
   | underline | Underline the text | True |
