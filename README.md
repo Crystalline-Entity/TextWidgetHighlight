@@ -53,4 +53,5 @@ call and are not saved.
   | tag_name | The name of the tag to use for this highlight|
   | new_text | Replacement text for the_text. Used if the_text has id options |
 Other parameters are as above in the initial call.
+
 To change the default values for future calls, use .config and set the values.
