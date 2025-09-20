@@ -52,12 +52,5 @@ call and are not saved.
   | the_text | The text in the widget to highlight |
   | tag_name | The name of the tag to use for this highlight|
   | new_text | Replacement text for the_text. Used if the_text has id options |
-  | underline | Underline text |
-  | underlinefg | Underline colour |
-  | fg_color | Highlighted text foreground colour |
-  | bg_color | Highlighted text background colour |
-  | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 |
-  | relief | Relief can be flat, raised. sunken, groove or ridge |
-  | bold | Make the text bold |
-
+Other parameters are as above in the initial call.
 To change the default values for future calls, use .config and set the values.
