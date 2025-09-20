@@ -55,3 +55,20 @@ call and are not saved.
 Other parameters are as above in the initial call.
 
 To change the default values for future calls, use .config and set the values.
+
+Parameters for call to .modify to change an existing highlight.
+
+  | **Parameter** | **Description** |
+  | --- | --- |
+  | text_widget |  The name of the text widget to apply highlights to |
+  | tag_name | The name of the tag to use for this highlight|
+  | underline | Underline the text |
+  | underlinefg | underline colour |
+  | fg_color | Highlighted text foreground colour |
+  | bg_color | Highlighted txt, background colour |
+  | relief | Relief can be flat, raised. sunken, groove or ridge |
+  | bold | Make the text bold |
+  | italic | Make the text italic |
+  | superscript | Make the text superscript |
+  | subscript | Make the text subscript |
+
