@@ -49,10 +49,20 @@ call and are not saved.
   | **Parameter** | **Description** |
   | --- | --- |
   | text_widget |  The name of the text widget to apply highlights to |
-  | the_text | The text in the widget to highlight |
   | tag_name | The name of the tag to use for this highlight|
+  | the_text | The text in the widget to highlight |
   | new_text | Replacement text for the_text. Used if the_text has id options |
-Other parameters are as above in the initial call.
+  | ignore_case | ignore the case of the text widget text| False |
+  | alpha_boundary | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
+  | qty |  Number of occurrences to highlight default is -1,  highlight all|
+  | underline | Underline the text |
+  | underlinefg | underline colour |
+  | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 |
+  | relief | Relief can be flat, raised. sunken, groove or ridge |
+  | bold | Make the text bold |
+  | italic | Make the text italic |
+  | superscript | Make the text superscript |
+  | subscript | Make the text subscript |
 
 To change the default values for future calls, use .config and set the values.
 
