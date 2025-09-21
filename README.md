@@ -70,7 +70,7 @@ call and are not saved.
 
 To change the default values for future calls, use .config and set the values.
 
-Parameters for call to .modify to change an existing highlight.
+Parameters for call to .modify, which changes an existing highlight.
 
   | **Parameter** | **Description** |
   | --- | --- |
