@@ -4,19 +4,23 @@
 
 ```Python
 textwidget_highlight = TextWidgetHighlight()
-
-textwidget_highlight.add(text_widget=tb, the_text='Comments:', tag_name='0')
-textwidget_highlight.add(text_widget=tb, the_text='Units:', tag_name='0')
-textwidget_highlight.add(text_widget=tb, the_text='Equations/Assignments:', tag_name='0')
-textwidget_highlight.add(text_widget=tb, the_text='Variables:', tag_name='0')
-textwidget_highlight.add(text_widget=tb, tag_name='0', fg_color='blue', bg_color='lightyellow',
-                      underline=True, underlinefg='red')
-textwidget_highlight.add(text_widget=tb, tag_name='and', the_text='and', new_text='as well as',
-                      qty=1, fg_color='yellow',bg_color='green', bold=True, relief=RAISED)
-textwidget_highlight.add(text_widget=tb, tag_name='number', the_text='number', fg_color='blue',
-                      bg_color='lightblue', underline=False, relief=GROOVE)
-textwidget_highlight.add(text_widget=tb, tag_name='are', the_text='are',
-                      fg_color='blue', bg_color='lightblue', underline=False, relief=SUNKEN, qty=2)
+tb = Textwidget(...) with some text.
+text_widget_highlight.add(text_widget=tb, the_text='Comments:', tag_name='0')
+text_widget_highlight.add(text_widget=tb, the_text='Units:', tag_name='0')
+text_widget_highlight.add(text_widget=tb, the_text='Equations/Assignments:', tag_name='0')
+text_widget_highlight.add(text_widget=tb, the_text='Variables:', tag_name='0')
+text_widget_highlight.add(text_widget=tb, tag_name='0', fg_color='blue', bg_color='lightyellow',
+                          underline=True, underlinefg='red', italic=True)
+text_widget_highlight.add(text_widget=tb, tag_name='and', the_text='and', new_text='as well as',
+                          qty=1, fg_color='yellow',bg_color='green', bold=True, relief=RAISED)
+text_widget_highlight.add(text_widget=tb, tag_name='number', the_text='number', fg_color='blue',
+                          bg_color='lightblue', underline=False, relief=GROOVE)
+text_widget_highlight.add(text_widget=tb, tag_name='are', the_text='are',
+                          fg_color='blue', bg_color='lightblue', underline=False, relief=SUNKEN, qty=2)
+text_widget_highlight.add(text_widget=tb, tag_name='enter', the_text='eNTer', superscript=True,
+                          ignore_case=True, fg_color='orange')
+text_widget_highlight.add(text_widget=tb, tag_name='is', the_text='is', ignore_case=True,
+                          subscript=True, fg_color='blue', bg_color='yellow', alpha_boundary=True)
 ```
 ![Screenshot](https://github.com/Crystalline-Entity/TextWidgetHighlight/blob/main/textwidgethighlight_messagebox.png)
 
