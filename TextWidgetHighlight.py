@@ -5,11 +5,10 @@ class TextWidgetHighlight():
     Author: Kevin Glentworth
     Date: September-2025
     Version: 2.0
-    Adds text highlighting to text in a text_widget.
+    Adds text highlighting to text in a text widget.
     __init__ sets the initial values for each configurable item, colours, bold, superscript etc.
     .config changes those values, they will be applied to future highlights.
     .add creates a new highlight. Any values specified here, over-ride the __init__ settings, but only for this highlight.
-        using .add with no the_text values, will modify the existing tag_name highlight, same function as .modify.
         qty defines how many occurrences to highlight, default of 0 highlights all.
     .modify allows an existing highlight to be changed.
     The text_widget is passed in the .add function, rather than the __init__ function. A single instance can
@@ -19,7 +18,7 @@ class TextWidgetHighlight():
                  fg_color: str='blue',
                  bg_color: str='yellow',
                  ignore_case: bool=False,
-                 alpha_boundary: bool=True,
+                 alpha_bounded: bool=True,
                  borderwidth: str='',
                  relief: str='',
                  underline: bool=False,
@@ -31,7 +30,7 @@ class TextWidgetHighlight():
         self._fg_color = fg_color
         self._bg_color = bg_color
         self._ignore_case = ignore_case
-        self._alpha_boundary = alpha_boundary
+        self._alpha_bounded = alpha_bounded
         self._borderwidth = borderwidth
         self._relief = relief
         self._underline = underline
@@ -48,7 +47,7 @@ class TextWidgetHighlight():
             the_text: str='',
             new_text: str=None,
             ignore_case: bool=None,
-            alpha_boundary: bool=None,
+            alpha_bounded: bool=None,
             qty: int=0,
             underline: bool=None,
             underlinefg: str=None,
@@ -62,7 +61,9 @@ class TextWidgetHighlight():
             subscript: bool=None):
         """
         Highlight one or more words in a text_widget.
-        New text, if specified, replaces the existing text. 
+        New text, if specified, replaces the existing text.
+        alpha_bounded: if false, will not process the highlight if the_text has an alpha character immediately before the start
+                       or immediately after end character in the text widget.
         """
         try:
             str0: str = text_widget.get('1.0', 'end')
@@ -73,7 +74,7 @@ class TextWidgetHighlight():
         fg_color_ = self._fg_color if fg_color is None else fg_color
         bg_color_ = self._bg_color if bg_color is None else bg_color
         ignore_case_ = self._ignore_case if ignore_case is None else ignore_case
-        alpha_boundary_ = self._alpha_boundary if alpha_boundary is None else alpha_boundary
+        alpha_bounded_ = self._alpha_bounded if alpha_bounded is None else alpha_bounded
         underline_ = self._underline if underline is None else underline
         underlinefg_ = self._underlinefg if underlinefg is None else underlinefg
         borderwidth_ = self._borderwidth if borderwidth is None else borderwidth
@@ -86,46 +87,48 @@ class TextWidgetHighlight():
             str0 = str0.lower()
             the_text = the_text.lower()
         num_found: int = 0
-        if len(the_text) > 0:
-            if str0.find(the_text) == -1:
-                return
-            text_length: int = len(the_text)
-            find_location: int = 0
-            while True:
-                find_location = str0.find(the_text, find_location)
-                if find_location == -1:
-                    break
-                text_length = len(the_text)
-                found_whole_text = True
-                if not alpha_boundary_: # check character before and after. If either is alpha, don't process this highlight.
-                    first_char: int = find_location
-                    last_char: int = find_location + text_length
-                    if first_char > 0 and str0[first_char-1:first_char].isalpha():
-                        found_whole_text = False
-                    if last_char < len(str0) and str0[last_char:last_char+1].isalpha():
-                        found_whole_text = False
-                if not alpha_boundary_ and not found_whole_text:
-                    find_location += text_length
-                    continue
-                begin_pos = '1.0 linestart+' + str(find_location) + 'c'
-                if new_text is not None and len(new_text) > 0:
-                    end_pos = '1.0 linestart+' + str(find_location + text_length) + 'c'
-                    text_widget.configure(state='normal')
-                    text_widget.delete(begin_pos, end_pos)
-                    text_widget.insert(begin_pos, new_text)
-                    text_widget.configure(state='disabled')
-                    text_length = len(new_text)
-                    str0: str = text_widget.get('1.0', 'end')
-                    if ignore_case_:
-                        str0 = str0.lower()
-                end_pos = '1.0 linestart+' + str(find_location + text_length) + 'c'
-                text_widget.tag_add(tag_name, begin_pos, end_pos)
-                find_location += text_length
-                num_found += 1
-                if num_found==qty:
-                    break
-        if text_widget.tag_nextrange(tag_name, '1.0') == 0:
+        #if len(the_text) > 0:
+        if len(the_text) == 0:
             return
+        if str0.find(the_text) == -1:
+            return
+        text_length: int = len(the_text)
+        find_location: int = 0
+        while True:
+            find_location = str0.find(the_text, find_location)
+            if find_location == -1:
+                break
+            text_length = len(the_text)
+            found_whole_text = True
+            if not alpha_bounded_:
+                first_char: int = find_location
+                last_char: int = find_location + text_length
+                if first_char > 0 and str0[first_char-1:first_char].isalpha():
+                    found_whole_text = False
+                if last_char < len(str0) and str0[last_char:last_char+1].isalpha():
+                    found_whole_text = False
+            if not alpha_bounded_ and not found_whole_text:
+                find_location += text_length
+                continue
+            begin_pos = '1.0 linestart+' + str(find_location) + 'c'
+            if new_text is not None and len(new_text) > 0:
+                end_pos = '1.0 linestart+' + str(find_location + text_length) + 'c'
+                text_widget.configure(state='normal')
+                text_widget.delete(begin_pos, end_pos)
+                text_widget.insert(begin_pos, new_text)
+                text_widget.configure(state='disabled')
+                text_length = len(new_text)
+                str0: str = text_widget.get('1.0', 'end') # reload from widget rather than slicing str0
+                if ignore_case_:
+                    str0 = str0.lower()
+            end_pos = '1.0 linestart+' + str(find_location + text_length) + 'c'
+            text_widget.tag_add(tag_name, begin_pos, end_pos)
+            find_location += text_length
+            num_found += 1
+            if num_found == qty:
+                break
+        #if text_widget.tag_nextrange(tag_name, '1.0') == 0:
+        #    return
         text_widget.tag_config(tag_name, foreground=fg_color_, background=bg_color)
         if underline_:
             text_widget.tag_config(tag_name, underline=True, underlinefg=underlinefg_)
@@ -217,8 +220,8 @@ class TextWidgetHighlight():
             self._fg_color = kwargs.pop('fg_color')
         if 'bg_color' in kwargs:
             self._bg_color = kwargs.pop('bg_color')
-        if 'alpha_boundary' in kwargs:
-            self._alpha_boundary = kwargs.pop('alpha_boundary')
+        if 'alpha_bounded' in kwargs:
+            self._alpha_bounded = kwargs.pop('alpha_bounded')
         if 'ignore_case' in kwargs:
             self._ignore_case = kwargs.pop('ignore_case')
         if 'borderwidth' in kwargs:
@@ -240,10 +243,8 @@ class TextWidgetHighlight():
     def get_config(self) -> dict:
         return vars(TextWidgetHighlight())
                 
- 
     def clear_all_tags(self, text_widget):
         self.clear_tag(text_widget, '@')
-
 
     def clear_tag(self, text_widget, tag_name: str|tuple|list|set = None):
         """
