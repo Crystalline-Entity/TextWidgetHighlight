@@ -18,7 +18,7 @@ class TextWidgetHighlight():
                  fg_color: str='blue',
                  bg_color: str='yellow',
                  ignore_case: bool=False,
-                 alpha_bounded: bool=True,
+                 alpha_adjacent: bool=True,
                  borderwidth: str='',
                  relief: str='',
                  underline: bool=False,
@@ -30,7 +30,7 @@ class TextWidgetHighlight():
         self._fg_color = fg_color
         self._bg_color = bg_color
         self._ignore_case = ignore_case
-        self._alpha_bounded = alpha_bounded
+        self._alpha_adjacent = alpha_adjacent
         self._borderwidth = borderwidth
         self._relief = relief
         self._underline = underline
@@ -47,7 +47,7 @@ class TextWidgetHighlight():
             the_text: str='',
             new_text: str=None,
             ignore_case: bool=None,
-            alpha_bounded: bool=None,
+            alpha_adjacent: bool=None,
             qty: int=0,
             underline: bool=None,
             underlinefg: str=None,
@@ -62,8 +62,8 @@ class TextWidgetHighlight():
         """
         Highlight one or more words in a text_widget.
         New text, if specified, replaces the existing text.
-        alpha_bounded: if false, will not process the highlight if the_text has an alpha character immediately before the start
-                       or immediately after end character in the text widget.
+        alpha_adjacent: if false, will not process the highlight if the_text has an alpha character immediately before the start
+                        or immediately after end character in the text widget.
         """
         try:
             str0: str = text_widget.get('1.0', 'end')
@@ -74,7 +74,7 @@ class TextWidgetHighlight():
         fg_color_ = self._fg_color if fg_color is None else fg_color
         bg_color_ = self._bg_color if bg_color is None else bg_color
         ignore_case_ = self._ignore_case if ignore_case is None else ignore_case
-        alpha_bounded_ = self._alpha_bounded if alpha_bounded is None else alpha_bounded
+        alpha_adjacent_ = self._alpha_adjacent if alpha_adjacent is None else alpha_adjacent
         underline_ = self._underline if underline is None else underline
         underlinefg_ = self._underlinefg if underlinefg is None else underlinefg
         borderwidth_ = self._borderwidth if borderwidth is None else borderwidth
@@ -100,14 +100,14 @@ class TextWidgetHighlight():
                 break
             text_length = len(the_text)
             found_whole_text = True
-            if not alpha_bounded_:
+            if not alpha_adjacent_:
                 first_char: int = find_location
                 last_char: int = find_location + text_length
                 if first_char > 0 and str0[first_char-1:first_char].isalpha():
                     found_whole_text = False
                 if last_char < len(str0) and str0[last_char:last_char+1].isalpha():
                     found_whole_text = False
-            if not alpha_bounded_ and not found_whole_text:
+            if not alpha_adjacent_ and not found_whole_text:
                 find_location += text_length
                 continue
             begin_pos = '1.0 linestart+' + str(find_location) + 'c'
@@ -196,14 +196,17 @@ class TextWidgetHighlight():
             b1 = font_string.split('}')
             b2 = b1[0].split('{')
             f = tuple((b2[1], b1[1]))
-            if bold is True:
-                f += ('bold',)
-            else:
-                f += ('normal',)
-            if italic is True:
-                f += ('italic',)
-            else:
-                f += ('roman',)
+            # only action bold & italic if they have been specified. If None, then no chnage is made.
+            if bold is not None:
+                if bold is True:
+                    f += ('bold',)
+                else:
+                    f += ('normal',)
+            if italic is not None:
+                if italic is True:
+                    f += ('italic',)
+                else:
+                    f += ('roman',)
             text_widget.tag_config(tag_name, font=(f))
         
             
@@ -220,8 +223,8 @@ class TextWidgetHighlight():
             self._fg_color = kwargs.pop('fg_color')
         if 'bg_color' in kwargs:
             self._bg_color = kwargs.pop('bg_color')
-        if 'alpha_bounded' in kwargs:
-            self._alpha_bounded = kwargs.pop('alpha_bounded')
+        if 'alpha_adjacent' in kwargs:
+            self._alpha_adjacent = kwargs.pop('alpha_adjacent')
         if 'ignore_case' in kwargs:
             self._ignore_case = kwargs.pop('ignore_case')
         if 'borderwidth' in kwargs:
@@ -237,7 +240,7 @@ class TextWidgetHighlight():
         if 'subscript' in kwargs:
             self._italic = kwargs.pop('subscript')
         if kwargs:
-            raise ValueError(f'{list(kwargs.keys())} not supported.')
+            raise ValueError(f'{list(kwargs.keys())} is/are not supported parameter(s).')
         
         
     def get_config(self) -> dict:
@@ -255,11 +258,9 @@ class TextWidgetHighlight():
         if type(tag_name)is str:
             if tag_name == '@' or tag_name.lower() == 'all' :
                 for tagname in text_widget.tag_names():
-                    if tag_name != 'SEL':
-                        text_widget.tag_delete(tagname)
+                    text_widget.tag_delete(tagname)
             else:
-                if tag_name != 'SEL':
-                    text_widget.tag_delete(tag_name)
+                text_widget.tag_delete(tag_name)
         else:
             if type(tag_name) in [tuple, list, set]:
                 for tagname in tag_name:
