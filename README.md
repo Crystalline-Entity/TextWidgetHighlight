@@ -20,7 +20,7 @@ text_widget_highlight.add(text_widget=tb, tag_name='are', the_text='are',
 text_widget_highlight.add(text_widget=tb, tag_name='enter', the_text='eNTer', superscript=True,
                           ignore_case=True, fg_color='orange')
 text_widget_highlight.add(text_widget=tb, tag_name='is', the_text='is', ignore_case=True,
-                          subscript=True, fg_color='blue', bg_color='yellow', alpha_boundary=True)
+                          subscript=True, fg_color='blue', bg_color='yellow', alpha_adjacent=True)
 ```
 ![Screenshot](https://github.com/Crystalline-Entity/TextWidgetHighlight/blob/main/textwidgethighlight_messagebox.png)
 
@@ -34,7 +34,7 @@ Parameters for the initial call to textbox_link. These are the defaults for all 
   | fg_color | Highlighted text foreground colour | 'blue' |
   | bg_color | Highlighted txt, background colour | 'yellow' |
   | ignore_case | ignore the case of the text widget text| False |
-  | alpha_boundary | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
+  | alpha_adjacent | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
   | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 | '' |
   | relief | Relief can be flat, raised. sunken, groove or ridge | '' |
   | underline | Underline the text | True |
@@ -57,7 +57,7 @@ call and are not saved.
   | the_text | The text in the widget to highlight |
   | new_text | Replacement text for the_text. Used if the_text has id options |
   | ignore_case | ignore the case of the text widget text| False |
-  | alpha_boundary | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
+  | alpha_adjacent | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
   | qty |  Number of occurrences to highlight default is 0,  highlight all|
   | underline | Underline the text |
   | underlinefg | underline colour |
