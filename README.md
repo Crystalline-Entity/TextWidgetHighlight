@@ -3,7 +3,7 @@
 <h3 align="center">Add highlighted text to a Text Widget.</h3>
 
 ```Python
-textwidget_highlight = TextWidgetHighlight()
+text_widget_highlight = TextWidgetHighlight()
 tb = Textwidget(...) with some text.
 text_widget_highlight.add(text_widget=tb, the_text='Comments:', tag_name='0')
 text_widget_highlight.add(text_widget=tb, the_text='Units:', tag_name='0')
@@ -27,7 +27,7 @@ text_widget_highlight.add(text_widget=tb, tag_name='is', the_text='is', ignore_c
 <h2 align='center'> OPTIONS </h2>
 <div align='left'>
 
-Parameters for the initial call to textbox_link. These are the defaults for all future calls.
+Parameters for the initial call to TextWidgetHighlight. These are the defaults for all future calls.
 
   | **Parameter** | **Description** | **Default** |
   | --- | --- | --- |
@@ -48,21 +48,21 @@ Parameters for the initial call to textbox_link. These are the defaults for all 
  
 Parameters for calls to .add to create highlighted text.
 These options are used to over-ride the options from the initial call above. These options apply only to this
-call and are not saved.
+highlight and are not saved.
 
   | **Parameter** | **Description** |
   | --- | --- |
   | text_widget |  The name of the text widget to apply highlights to |
   | tag_name | The name of the tag to use for this highlight|
   | the_text | The text in the widget to highlight |
-  | new_text | Replacement text for the_text. Used if the_text has id options |
+  | new_text | Replacement text for the_text. Used if the_text has options |
   | ignore_case | ignore the case of the text widget text| False |
   | alpha_adjacent | specifies if alphabetic characters are OK adjacent to the search string.<br>if True, search for 'went', will match twenty<br>if False, search for went will not match twenty. | True |
   | qty |  Number of occurrences to highlight default is 0,  highlight all|
   | underline | Underline the text |
   | underlinefg | underline colour |
   | borderwidth | Apply a border to the highlighted text. If relief is specified, borderwidth is set to 3 |
-  | relief | Relief can be flat, raised. sunken, groove or ridge |
+  | relief | Relief can be flat, raised, sunken, groove or ridge |
   | bold | Make the text bold |
   | italic | Make the text italic |
   | superscript | Make the text superscript |
@@ -74,8 +74,8 @@ Parameters for call to .modify, which changes an existing highlight.
 
   | **Parameter** | **Description** |
   | --- | --- |
-  | text_widget |  The name of the text widget to apply highlights to |
-  | tag_name | The name of the tag to use for this highlight|
+  | text_widget |  The name of the text widget |
+  | tag_name | The name of an existing tag to use for this change |
   | underline | Underline the text |
   | underlinefg | underline colour |
   | fg_color | Highlighted text foreground colour |
